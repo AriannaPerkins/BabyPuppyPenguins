@@ -1,6 +1,6 @@
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = window.innerWidth - margin.left - margin.right,
-    height = window.innerHeight - margin.top - margin.bottom;
+    height = (window.innerHeight - margin.top - margin.bottom) / 2.0;
 
     var parseDate = d3.time.format("%d-%b-%Y").parse;
 
@@ -22,7 +22,7 @@
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.rate); });
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#trend").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -57,27 +57,38 @@
       .attr("class", "line")
       .attr("d", line);
 
-    //Mouseover tip
-    var tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .offset([80, 0])
-    .html(function(d) {
-      return "<strong>" + d.date + "</strong><br>" +
-      d.rate + "<br>"
+
+      d3.tsv("key_dates.tsv", function(error, data) {
+        data.forEach(function(d) {
+          d.date = parseDate(d.date);
+          d.rate = + d.rate;
+        });
+
+        //Mouseover tip
+        var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([80, 0])
+        .html(function(d) {
+          return "<strong>" + d.date + "</strong><br>" +
+          d.rate + "<br>"
+        });
+
+        svg.call(tip);
+
+        svg.selectAll("#dot")
+        .data(data)
+        .enter().append("circle")
+        .attr('class', 'datapoint')
+        .attr('cx', function(d) { return x(d.date); })
+        .attr('cy', function(d) { return y(d.rate); })
+        .attr('r', 6)
+        .attr('fill', 'white')
+        .attr('stroke', '#00CC99')
+        .attr('stroke-width', '3')
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide)
+        .on('click', function(d) {
+          $('#content').text(d.event);
+        });
+      });
     });
-
-    svg.call(tip);
-
-    svg.selectAll(".dot")
-    .data(data)
-    .enter().append("circle")
-    .attr('class', 'datapoint')
-    .attr('cx', function(d) { return x(d.date); })
-    .attr('cy', function(d) { return y(d.rate); })
-    .attr('r', 6)
-    .attr('fill', 'white')
-    .attr('stroke', '#00CC99')
-    .attr('stroke-width', '3')
-    .on('mouseover', tip.show)
-    .on('mouseout', tip.hide);
-  });
