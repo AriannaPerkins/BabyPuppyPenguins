@@ -1,125 +1,79 @@
 <!DOCTYPE html>
+<html>
+<head>
+
 <meta charset="utf-8">
-<style>
+<link rel="stylesheet" href="styles.css">
 
-  body {
-    font: 10px sans-serif;
-  }
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
-  .axis path,
-  .axis line {
-    fill: none;
-    stroke: #00CC99;
-    shape-rendering: crispEdges;
-  }
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 
-  .x.axis path {
-    display: none;
-  }
-
-  .line {
-    fill: none;
-    stroke: #00CC99;
-    stroke-width: 1.5px;
-  }
-
-  .d3-tip {
-    line-height: 1;
-    font-weight: bold;
-    padding: 12px;
-    background: rgba(0, 0, 0, 0.8);
-    color: #00CC99;
-    border-radius: 2px;
-  }
-
-</style>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
 <body>
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Brand</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+          <li><a href="#">Link</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+              <li class="divider"></li>
+              <li><a href="#">One more separated link</a></li>
+            </ul>
+          </li>
+        </ul>
+        <form class="navbar-form navbar-left" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Link</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+
   <script src="http://d3js.org/d3.v3.js"></script>
   <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-  <script>
-
-    var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = window.innerWidth - margin.left - margin.right,
-    height = window.innerHeight - margin.top - margin.bottom;
-
-    var parseDate = d3.time.format("%d-%b-%Y").parse;
-
-    var x = d3.time.scale()
-    .range([0, width]);
-
-    var y = d3.scale.linear()
-    .range([height, 0]);
-
-    var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
-
-    var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
-
-    var line = d3.svg.line()
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.rate); });
-
-    var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    d3.tsv("report_clean.tsv", function(error, data) {
-      data.forEach(function(d) {
-        d.date = parseDate(d.date);
-        d.rate = +d.rate;
-      });
-
-      x.domain(d3.extent(data, function(d) { return d.date; }));
-      y.domain(d3.extent(data, function(d) { return d.rate; }));
-
-      svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-      svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Price ($)");
-
-      svg.append("path")
-      .datum(data)
-      .attr("class", "line")
-      .attr("d", line);
-
-    //Mouseover tip
-    var tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .offset([80, 0])
-    .html(function(d) {
-      return "<strong>" + d.date + "</strong><br>" +
-      d.rate + "<br>"
-    });
-
-    svg.call(tip);
-
-    svg.selectAll(".dot")
-    .data(data)
-    .enter().append("circle")
-    .attr('class', 'datapoint')
-    .attr('cx', function(d) { return x(d.date); })
-    .attr('cy', function(d) { return y(d.rate); })
-    .attr('r', 6)
-    .attr('fill', 'white')
-    .attr('stroke', '#00CC99')
-    .attr('stroke-width', '3')
-    .on('mouseover', tip.show)
-    .on('mouseout', tip.hide);
-  });
-
-</script>
+  <script src="babypuppy.js"></script>
+  
+</body>
+</html>
