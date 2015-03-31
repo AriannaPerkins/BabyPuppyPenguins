@@ -27,3 +27,9 @@
     color: #FFFFFF;
     border-radius: 2px;
   }
+
+#content {
+  padding-left: 25px;
+  padding-right: 25px;
+  font-size: 16px;
+}
