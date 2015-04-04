@@ -85,10 +85,10 @@ d3.tsv("report_clean.tsv", function(error, data) {
     .attr('fill', 'white')
     .attr('stroke', '#CC0000')
     .attr('stroke-width', '3')
-    .on('mouseover', tip.show)
-    .on('mouseout', tip.hide)
-    .on('click', function(d) {
+    .on('mouseover', function(d) {
+      tip.show(d);
       $('#content').text(d.event);
-    });
+    })
+    .on('mouseout', tip.hide)
   });
 });
