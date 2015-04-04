@@ -39,13 +39,16 @@ d3.tsv("report_clean.tsv", function(error, data) {
 
   svg.append("g")
   .attr("class", "x axis")
+  .attr("stroke", "#FFFFFF")
   .attr("transform", "translate(0," + height + ")")
   .call(xAxis);
 
   svg.append("g")
+  .attr("stroke", "#FFFFFF")
   .attr("class", "y axis")
   .call(yAxis)
   .append("text")
+  .attr("stroke", "#FFFFFF")
   .attr("transform", "rotate(-90)")
   .attr("y", 6)
   .attr("dy", ".71em")
@@ -82,8 +85,8 @@ d3.tsv("report_clean.tsv", function(error, data) {
     .attr('cx', function(d) { return x(d.date); })
     .attr('cy', function(d) { return y(d.rate); })
     .attr('r', 6)
-    .attr('fill', 'white')
-    .attr('stroke', '#CC0000')
+    .attr('fill', '#2b3e50')
+    .attr('stroke', '#FFFFFF')
     .attr('stroke-width', '3')
     .on('mouseover', function(d) {
       tip.show(d);
