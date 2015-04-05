@@ -53,13 +53,46 @@ body {
 }
 
 /* Set the fixed height of the footer here */
-#push,
-#footer {
+/*#push,*/
+/*#footer {
   height: 60px;
 }
 #footer {
   background-color: #4e5d6c;
+}*/
+
+footer{
+ height: auto;
+ padding:1px 15px;
+ width:100%;
+ border: 1px solid #CCC;
+ }
+#copyright{
+ float:left;
+ width:33.3%;  
+ /*border:1px solid #CCC;*/
+ padding:10px;
 }
+#names{
+ width:33.3%;        
+ float:left;
+ text-align:center;
+ /*border:1px solid #CCC;*/
+ padding:10px;
+ }
+#prepfor{
+float: left;
+width:33.3%; 
+text-align: right;
+/*border:1px solid #CCC;*/
+padding:10px;
+}
+/*#copyright{*/
+/*float:left;*/
+/*text-align:center;*/
+/*border:1px solid #333;*/
+/*width:514px;*/
+/*}*/
 
 /* Lastly, apply responsive CSS fixes as necessary */
 @media (max-width: 767px) {
